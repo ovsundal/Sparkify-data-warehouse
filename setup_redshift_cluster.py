@@ -105,8 +105,8 @@ def main():
 
     DWH_DB = config.get('DWH', 'DWH_DB')
     DWH_CLUSTER_IDENTIFIER = config.get('DWH', 'DWH_CLUSTER_IDENTIFIER')
-    DWH_DB_USER = config.get('DWH', 'DWH_DB_USER')
-    DWH_DB_PASSWORD = config.get('DWH', 'DWH_DB_PASSWORD')
+    DWH_DB_USER = config.get('CLUSTER', 'DB_USER')
+    DWH_DB_PASSWORD = config.get('CLUSTER', 'DB_PASSWORD')
     REGION = config.get('CLUSTER', 'REGION')
     DWH_IAM_ROLE_NAME = config.get("DWH", "DWH_IAM_ROLE_NAME")
 
