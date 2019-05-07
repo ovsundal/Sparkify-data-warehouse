@@ -125,14 +125,14 @@ def main():
     # ONLY RUN THIS ONCE THE CLUSTER IS AVAILABLE
     # open an incoming TCP port to access the cluster endpoint
 
-    DWH_PORT = config.get("DWH", "DWH_PORT")
-    redshift = boto3.client('redshift',
-                            region_name=REGION,
-                            aws_access_key_id=KEY,
-                            aws_secret_access_key=SECRET)
-
-    myClusterProps = redshift.describe_clusters(ClusterIdentifier=DWH_CLUSTER_IDENTIFIER)['Clusters'][0]
-    open_cluster_endpoint(ec2, myClusterProps, DWH_PORT)
+    # DWH_PORT = config.get("DWH", "DWH_PORT")
+    # redshift = boto3.client('redshift',
+    #                         region_name=REGION,
+    #                         aws_access_key_id=KEY,
+    #                         aws_secret_access_key=SECRET)
+    #
+    # myClusterProps = redshift.describe_clusters(ClusterIdentifier=DWH_CLUSTER_IDENTIFIER)['Clusters'][0]
+    # open_cluster_endpoint(ec2, myClusterProps, DWH_PORT)
 
 
 if __name__ == "__main__":
