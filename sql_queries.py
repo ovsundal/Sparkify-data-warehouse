@@ -24,7 +24,7 @@ staging_songs_table_create = ("""
 """)
 
 songplay_table_create = ("""
-CREATE TABLE IF NOT EXISTS songplays
+CREATE TABLE IF NOT EXISTS fact_songplays
 (
 songplay_id int IDENTITY(0,1) PRIMARY KEY,
 start_time timestamp NOT NULL,
@@ -39,7 +39,7 @@ user_agent varchar(255) NOT NULL
 """)
 
 user_table_create = ("""
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE IF NOT EXISTS dim_users
 (
 user_id int PRIMARY KEY,
 first_name varchar(255) NOT NULL,
@@ -50,12 +50,38 @@ level varchar(255) NOT NULL
 """)
 
 song_table_create = ("""
+CREATE TABLE IF NOT EXISTS dim_songs
+(
+song_id varchar(255) PRIMARY KEY,
+title varchar(255) NOT NULL,
+artist_id varchar(255) NOT NULL,
+year int NOT NULL,
+duration float NOT NULL
+);
 """)
 
 artist_table_create = ("""
+CREATE TABLE IF NOT EXISTS dim_artists
+(
+artist_id varchar(255) NOT NULL,
+name varchar(255) NOT NULL,
+location varchar(255) NOT NULL,
+latitude real NOT NULL,
+longitude real NOT NULL
+);
 """)
 
 time_table_create = ("""
+CREATE TABLE IF NOT EXISTS dim_time
+(
+timestamp timestamp,
+hour int NOT NULL,
+day int NOT NULL,
+week int NOT NULL,
+month int NOT NULL,
+year int NOT NULL,
+weekday int NOT NULL
+);
 """)
 
 # STAGING TABLES
