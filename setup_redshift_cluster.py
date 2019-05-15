@@ -4,6 +4,10 @@ import boto3
 
 
 def create_clients(KEY, SECRET, REGION):
+    """
+    Creates clients to interact with the AWS API
+    :rtype: object
+    """
     iam = boto3.client('iam', aws_access_key_id=KEY,
                          aws_secret_access_key=SECRET,
                          region_name=REGION)
@@ -14,7 +18,13 @@ def create_clients(KEY, SECRET, REGION):
                          aws_secret_access_key=SECRET
                          )
 
-    return iam, ec2
+    s3 = boto3.resource('s3',
+                         region_name=REGION,
+                         aws_access_key_id=KEY,
+                         aws_secret_access_key=SECRET
+                         )
+
+    return iam, ec2, s3
 
 
 def create_iam_role(iam, DWH_IAM_ROLE_NAME):
@@ -112,7 +122,7 @@ def main():
 
 
     # get clients
-    iam, ec2 = create_clients(KEY, SECRET, REGION)
+    iam, ec2, s3 = create_clients(KEY, SECRET, REGION)
 
     # create iam role and get roleArn
     create_iam_role(iam, DWH_IAM_ROLE_NAME)
