@@ -1,6 +1,7 @@
 import configparser
 import psycopg2
-from sql_queries import copy_table_queries, insert_table_queries
+from sql_queries import copy_table_queries, insert_table_queries, select_time_table, truncate_time_table, \
+    time_table_full_insert
 import pandas as pd
 
 
@@ -25,17 +26,29 @@ def insert_tables(cur, conn):
 
 
 def fill_time_table(cur, conn):
-    cur.execute('SELECT ts FROM dim_time')
-    t = pd.to_datetime(cur.fetchone(), unit='ms')
+    """
+    Extracts timestamp value from table, derives time values, truncates the old table and inserts a new row with all time data
+    :param cur:
+    :param conn:
+    """
+    cur.execute(select_time_table)
+    raw_data = list(cur.fetchall())
+    time_data = []
 
-    cur.execute('INSERT INTO dim_time ')
+    for row in raw_data:
+        t = pd.to_datetime(row[0], unit='ms')
+        time_data.append([row[0], t.hour, t.day, t.week, t.month, t.year, t.weekday()])
 
-    time_data = [t, t[0].hour, t[0].day, t[0].week, t[0].month, t[0].year, t[0].weekday]
-    column_labels = ['timestamp', 'hour', 'day', 'week', 'month', 'year', 'weekday']
-    time_df = pd.DataFrame.from_dict(dict(zip(column_labels, time_data)))
+    cur.execute(truncate_time_table)
 
-    print(time_data)
-    print(time_df)
+    for entry in time_data:
+        try:
+            cur.execute(time_table_full_insert, entry)
+            conn.commit()
+        except psycopg2.Error as e:
+            print('Error inserting row')
+            print(e)
+
 
 
 def main():

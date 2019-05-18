@@ -168,7 +168,16 @@ time_table_insert = (
     (SELECT ts from staging_events)
     """
 )
+
+time_table_full_insert = ('INSERT INTO dim_time(ts, hour, day, week, month, year, weekday) VALUES(%s,%s,%s,%s,%s,%s,%s);')
+select_time_table = ('SELECT ts FROM dim_time')
+truncate_time_table = ('TRUNCATE TABLE dim_time')
+
+
 # QUERY LISTS
+
+
+
 
 create_table_queries = [songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create, staging_events_table_create, staging_songs_table_create]
 drop_table_queries = [
