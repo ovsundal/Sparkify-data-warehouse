@@ -62,7 +62,7 @@ songplay_table_create = ("""
 CREATE TABLE IF NOT EXISTS fact_songplays
 (
 songplay_id int IDENTITY(0,1) PRIMARY KEY,
-start_time timestamp,
+start_time bigint,
 user_id int,
 level varchar(255),
 song_id varchar(255),
@@ -138,13 +138,18 @@ staging_songs_copy = (
 
 # FINAL TABLES
 
-songplay_table_insert = ("""
-""")
+songplay_table_insert = (
+    """
+    INSERT INTO fact_songplays(start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
+    (SELECT ts, userid, level, s.song_id, s.artist_id, sessionid, location, useragent FROM staging_events AS e
+        LEFT OUTER JOIN staging_songs AS s ON e.song = s.title)
+    """
+)
 
 user_table_insert = (
     """
     INSERT INTO dim_users(user_id, first_name, last_name, gender, level)
-    (SELECT userid, firstname, lastname, gender, level from staging_events)
+    (SELECT userid, firstname, lastname, gender, level FROM staging_events )
     """
 )
 
