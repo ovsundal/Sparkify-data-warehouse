@@ -33,6 +33,7 @@ def fill_time_table(cur, conn):
     """
     cur.execute(select_time_table)
     raw_data = list(cur.fetchall())
+    print('Retrieving time data...')
     time_data = []
 
     for row in raw_data:
@@ -40,6 +41,7 @@ def fill_time_table(cur, conn):
         time_data.append([row[0], t.hour, t.day, t.week, t.month, t.year, t.weekday()])
 
     cur.execute(truncate_time_table)
+    print('Truncating table and inserting new rows with time required units...')
 
     for entry in time_data:
         try:
