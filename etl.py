@@ -18,11 +18,15 @@ def load_staging_tables(cur, conn):
 
 
 def insert_tables(cur, conn):
-    for query in insert_table_queries:
-        print(query)
-        
-        cur.execute(query)
-        conn.commit()
+    try:
+        for query in insert_table_queries:
+            print(query)
+
+            cur.execute(query)
+            conn.commit()
+    except psycopg2.Error as e:
+        print('Error inserting into table')
+        print(e)
 
 
 def fill_time_table(cur, conn):
