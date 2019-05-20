@@ -76,7 +76,7 @@ user_agent varchar(255)
 user_table_create = ("""
 CREATE TABLE IF NOT EXISTS dim_users
 (
-user_id int,
+user_id int PRIMARY KEY NOT NULL,
 first_name varchar(255),
 last_name varchar(255),
 gender char,
@@ -87,7 +87,7 @@ level varchar(255)
 song_table_create = ("""
 CREATE TABLE IF NOT EXISTS dim_songs
 (
-song_id varchar(255),
+song_id varchar(255) PRIMARY KEY NOT NULL,
 title varchar(255),
 artist_id varchar(255),
 year int,
@@ -98,7 +98,7 @@ duration float
 artist_table_create = ("""
 CREATE TABLE IF NOT EXISTS dim_artists
 (
-artist_id varchar(255),
+artist_id varchar(255) PRIMARY KEY NOT NULL,
 name varchar(255),
 location varchar(255),
 latitude decimal,
@@ -109,7 +109,7 @@ longitude decimal
 time_table_create = ("""
 CREATE TABLE IF NOT EXISTS dim_time
 (
-ts bigint,
+ts timestamp,
 hour int,
 day int,
 week int,
@@ -149,21 +149,21 @@ songplay_table_insert = (
 user_table_insert = (
     """
     INSERT INTO dim_users(user_id, first_name, last_name, gender, level)
-    (SELECT userid, firstname, lastname, gender, level FROM staging_events )
+    (SELECT DISTINCT userid, firstname, lastname, gender, level FROM staging_events )
     """
 )
 
 song_table_insert = (
     """
     INSERT INTO dim_songs(song_id, title, artist_id, year, duration)
-    (SELECT song_id, title, artist_id, year, duration from staging_songs)
+    (SELECT DISTINCT song_id, title, artist_id, year, duration from staging_songs)
     """
 )
 
 artist_table_insert = (
     """
     INSERT INTO dim_artists(artist_id, name, location, latitude, longitude)
-    (SELECT artist_id, artist_name, artist_location, artist_latitude, artist_longitude from staging_songs)
+    (SELECT DISTINCT artist_id, artist_name, artist_location, artist_latitude, artist_longitude from staging_songs)
     """
 )
 
