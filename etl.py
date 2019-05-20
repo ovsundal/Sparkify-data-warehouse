@@ -41,8 +41,8 @@ def fill_time_table(cur, conn):
     time_data = []
 
     for row in raw_data:
-        t = pd.to_datetime(row[0], unit='ms')
-        time_data.append([row[0], t.hour, t.day, t.week, t.month, t.year, t.weekday()])
+        t = pd.to_datetime(row[0])
+        time_data.append([t, t.hour, t.day, t.week, t.month, t.year, t.weekday()])
 
     cur.execute(truncate_time_table)
     print('Truncating table and inserting new rows with time required units...')
